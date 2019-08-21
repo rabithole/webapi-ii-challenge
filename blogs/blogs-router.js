@@ -1,6 +1,6 @@
 const express = require('express');
 
-const Blogs = require('./blogs-model.js');
+const Posts = require('./blogs-model.js');
 
 const router = express.Router();
 // URI: /api/blogs
@@ -25,23 +25,23 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   try {
     // console.log('query', req.query);
-    const blogs = await Blogs.find(req.query);
-    res.status(200).json(blogs);
+    const posts = await Posts.find(req.query);
+    res.status(200).json(posts);
   } catch (error) {
     // log error to database
     console.log(error);
     res.status(500).json({
-      message: 'Error retrieving the blogs',
+      message: 'Error retrieving the damn posts',
     });
   }
 });
 
 // This is also a GET to /api/blogs/:id
 router.get('/:id', (req, res) => {
-  Blogs.findById(req.params.id)
-  .then(blog => {
-    if (blog) {
-      res.status(200).json(blog);
+  Posts.findById(req.params.id)
+  .then(posts => {
+    if (posts) {
+      res.status(200).json(posts);
     } else {
       res.status(404).json({ message: 'blog not found' });
     }
@@ -50,7 +50,7 @@ router.get('/:id', (req, res) => {
     // log error to database
     console.log(error);
     res.status(500).json({
-      message: 'Error retrieving the blog',
+      message: 'Error retrieving the damn blog',
     });
   });
 });
@@ -108,15 +108,15 @@ router.put('/:id', (req, res) => {
 
 // add an endpoint that returns all the message for a blog
 // GET /api/blogs/:id/messages
-router.get('/:id/messages', async (req, res) => {
+router.get('/:id/comments', async (req, res) => {
   try {
     const { id } = req.params;
-    const messages = await Blogs.findBlogMessages(id);
-    res.status(200).json(messages);
+    const comments = await Posts.findPostMessages(id);
+    res.status(200).json(comments);
   } catch (error) {
     // log error to database
     res.status(500).json({
-      message: 'Error finding blog messages',
+      message: 'Error finding Post messages',
     });
   }
 });

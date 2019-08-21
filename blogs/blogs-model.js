@@ -8,7 +8,7 @@ module.exports = {
   add,
   remove,
   update,
-  findHubMessages,
+  findPostMessages,
   findMessageById,
   addMessage,
 };
@@ -17,7 +17,7 @@ function find(query) {
   const { page = 1, limit = 2, sortby = 'id', sortdir = 'asc' } = query;
   const offset = limit * (page - 1);
 
-  let rows = db('blogs')
+  let rows = db('posts')
     .orderBy(sortby, sortdir)
     .limit(limit)
     .offset(offset);
@@ -26,34 +26,34 @@ function find(query) {
 }
 
 function findById(id) {
-  return db('blogs')
+  return db('posts')
     .where({ id })
     .first();
 }
 
 async function add(blog) {
-  const [id] = await db('blogs').insert(blog);
+  const [id] = await db('posts').insert(blog);
 
   return findById(id);
 }
 
 function remove(id) {
-  return db('blogs')
+  return db('posts')
     .where({ id })
     .del();
 }
 
 function update(id, changes) {
-  return db('blogs')
+  return db('posts')
     .where({ id })
     .update(changes, '*');
 }
 
-function findHubMessages(hubId) {
+function findPostMessages(postId) {
   return db('messages as m')
-    .join('blogs as h', 'm.hub_id', 'h.id')
+    .join('posts as h', 'm.hub_id', 'h.id')
     .select('m.id', 'm.text', 'm.sender', 'h.id as hubId', 'h.name as blog')
-    .where({ hub_id: hubId });
+    .where({ post_id: postId });
 }
 
 // You Do

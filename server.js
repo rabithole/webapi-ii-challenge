@@ -5,11 +5,11 @@ const BlogsRouter = require('./blogs/blogs-router.js');
 const server = express();
 
 server.use(express.json()); // Converts data to json... This is middleware...
-server.use('/api/blogs', BlogsRouter);
+server.use('/api/posts', BlogsRouter);
 
 server.get('/', (req, res) => {
   res.send(`
-    <h2>Lambda blogs API</h>
+    <h2>API Challeng blogs API</h>
     <p>Welcome to the Lambda blogs API</p>
   `);
 });
