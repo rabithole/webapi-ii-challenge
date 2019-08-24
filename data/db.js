@@ -11,6 +11,7 @@ module.exports = {
   findPostComments,
   findCommentById,
   insertComment,
+  add,
 };
 
 function find() {
@@ -19,6 +20,12 @@ function find() {
 
 function findById(id) {
   return db('posts').where({ id: Number(id) });
+}
+
+async function add(post) {
+  const [id] = await db('posts').insert(post);
+
+  return findById(id);
 }
 
 function insert(post) {

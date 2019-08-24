@@ -1,6 +1,8 @@
 const express = require('express');
 
-const Posts = require('./blogs-model.js');
+const Posts = require('../data/db.js');
+// ./blogs-model.js
+// ../data/db.js
 
 const router = express.Router();
 // URI: /api/blogs
@@ -90,33 +92,33 @@ router.delete('/:id', (req, res) => {
 router.put('/:id', (req, res) => {
   const changes = req.body;
   Posts.update(req.params.id, changes)
-  .then(blog => {
-    if (blog) {
-      res.status(200).json(blog);
+  .then(post => {
+    if (post) {
+      res.status(200).json(post);
     } else {
-      res.status(404).json({ message: 'The blog could not be found' });
+      res.status(404).json({ message: 'The damn post could not be found' });
     }
   })
   .catch(error => {
     // log error to database
     console.log(error);
     res.status(500).json({
-      message: 'Error updating the blog',
+      message: 'Error updating the post',
     });
   });
 });
 
-// add an endpoint that returns all the message for a blog
+// add an endpoint that returns all the message for a post
 // GET /api/Posts/:id/messages
 router.get('/:id/comments', async (req, res) => {
   try {
     const { id } = req.params;
-    const comments = await Posts.findPostMessages(id);
+    const comments = await Posts.findCommentsById(id);
     res.status(200).json(comments);
   } catch (error) {
     // log error to database
     res.status(500).json({
-      message: 'Error finding Post messages',
+      message: 'Error finding your comment!',
     });
   }
 });
