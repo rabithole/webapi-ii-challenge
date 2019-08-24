@@ -56,21 +56,21 @@ router.get('/:id', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  Blogs.add(req.body)
-  .then(blog => {
-    res.status(201).json(blog);
+  Posts.add(req.body)
+  .then(post => {
+    res.status(201).json(post);
   })
   .catch(error => {
     // log error to database
     console.log(error);
     res.status(500).json({
-      message: 'Error adding the blog',
+      message: 'Error adding the damn post',
     });
   });
 });
 
 router.delete('/:id', (req, res) => {
-  Blogs.remove(req.params.id)
+  Posts.remove(req.params.id)
   .then(count => {
     if (count > 0) {
       res.status(200).json({ message: 'The blog has been nuked' });
@@ -89,7 +89,7 @@ router.delete('/:id', (req, res) => {
 
 router.put('/:id', (req, res) => {
   const changes = req.body;
-  Blogs.update(req.params.id, changes)
+  Posts.update(req.params.id, changes)
   .then(blog => {
     if (blog) {
       res.status(200).json(blog);
@@ -107,7 +107,7 @@ router.put('/:id', (req, res) => {
 });
 
 // add an endpoint that returns all the message for a blog
-// GET /api/blogs/:id/messages
+// GET /api/Posts/:id/messages
 router.get('/:id/comments', async (req, res) => {
   try {
     const { id } = req.params;
@@ -126,7 +126,7 @@ router.post('/:id/messages', async (req, res) => {
   const messageInfo = {...req.body, Blog_id: req.params.id };
 
   try {
-    const savedMessage = await Blogs.addMessage(messageInfo);
+    const savedMessage = await Posts.addMessage(messageInfo);
     res.status(201).json(savedMessage);
   } catch (error) {
     // log error to database
@@ -140,7 +140,7 @@ router.post('/:id/messages', async (req, res) => {
 module.exports = router;
 
 router.post('/', (req, res) => {
-  Blogs.add(req.body)
+  Posts.add(req.body)
   .then(blog => {
     res.status(201).json(blog);
   })
